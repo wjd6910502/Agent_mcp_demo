@@ -20,13 +20,19 @@
 pip install -r requirements.txt
 ```
 
-## 运行服务
+## 运行server服务
 
 ```bash
-python app.py
+bash start_server.sh
 ```
 
-服务将在 `http://localhost:5000` 启动。
+## 运行client服务
+
+```bash
+bash start_client.sh
+```
+
+服务将在 `http://localhost:10800` 启动。
 
 ## API接口
 
