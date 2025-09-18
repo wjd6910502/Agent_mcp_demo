@@ -1,0 +1,8 @@
+flask==2.3.3
+flask-cors==4.0.0
+qwen-agent
+json5
+pandas
+urllib3
+requests 
+dotenv

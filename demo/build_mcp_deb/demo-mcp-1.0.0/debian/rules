@@ -1,0 +1,38 @@
+#!/usr/bin/make -f
+
+# Uncomment this to turn on verbose mode.
+#export DH_VERBOSE = 1
+
+# These are used for cross-compiling and for saving the configure script
+# from having to guess our platform (since we know it already)
+DEB_HOST_GNU_TYPE   ?= $(shell dpkg-architecture -qDEB_HOST_GNU_TYPE)
+DEB_BUILD_GNU_TYPE  ?= $(shell dpkg-architecture -qDEB_BUILD_GNU_TYPE)
+
+# Default target
+%:
+	dh $@
+
+# Override the install target to copy source_pkg files and scripts
+override_dh_install:
+	# Install the main application files
+	dh_install
+	
+	# Create main application directory
+	mkdir -p debian/demo-mcp/usr/share/demo-mcp/
+	
+	# Copy source_pkg directory and its contents
+	cp -r source_pkg debian/demo-mcp/usr/share/demo-mcp/ 2>/dev/null || echo "Warning: source_pkg directory not found"
+	
+	# Copy installation scripts
+	cp debian/install-nvm-node.sh debian/demo-mcp/usr/share/demo-mcp/ 2>/dev/null || echo "Warning: install-nvm-node.sh not found"
+	cp debian/install-uv.sh debian/demo-mcp/usr/share/demo-mcp/ 2>/dev/null || echo "Warning: install-uv.sh not found"
+	
+	# Make scripts executable
+	chmod +x debian/demo-mcp/usr/share/demo-mcp/install-nvm-node.sh 2>/dev/null || true
+	chmod +x debian/demo-mcp/usr/share/demo-mcp/install-uv.sh 2>/dev/null || true
+
+# Override clean target to clean up any temporary files
+override_dh_clean:
+	dh_clean
+	rm -rf debian/demo-mcp/usr/share/demo-mcp/source_pkg 2>/dev/null || true
+	rm -f debian/demo-mcp/usr/share/demo-mcp/install-*.sh 2>/dev/null || true

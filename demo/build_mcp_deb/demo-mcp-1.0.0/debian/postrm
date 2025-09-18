@@ -1,0 +1,36 @@
+#!/bin/bash
+set -e
+
+# This script is called after the package is removed
+# $1 contains the action: remove, purge, upgrade, failed-upgrade, disappear
+
+case "$1" in
+    remove|purge)
+        echo "Cleaning up Demo MCP package..."
+        
+        # Remove symlinks created by install scripts
+        rm -f /usr/local/bin/node
+        rm -f /usr/local/bin/npm
+        rm -f /usr/local/bin/npx
+        rm -f /usr/local/bin/uv
+        
+        # Remove environment configuration files
+        rm -f /etc/profile.d/nvm.sh
+        rm -f /etc/profile.d/uv.sh
+        
+        # Remove installation directories (only if empty)
+        rmdir /opt/nvm 2>/dev/null || true
+        rmdir /opt/node 2>/dev/null || true
+        rmdir /opt/uv 2>/dev/null || true
+        
+        echo "Demo MCP package cleanup completed"
+        ;;
+    upgrade|failed-upgrade|disappear)
+        # These actions are called during package upgrades
+        # We don't need to do anything special here
+        ;;
+    *)
+        echo "postrm called with unknown argument \`$1'" >&2
+        exit 1
+        ;;
+esac 

@@ -1,0 +1,6 @@
+
+对/home/kylin/桌面目录下的“MCP” 文件夹下的pdf文件进行去重操作，将重复的文件移至“临时”文件夹下,没有重复的不用动
+
+
+读取/home/kylin目录下"test_mcp_blender"文件夹下的wujiaox.py，读取内部内容，让blender按内容代码执行
+读取/home/kylin目录下“test_mcp_blender"文件夹下的simple_fbx_import_car_yellow.py，读取内部内容，让blender按内容代码执行

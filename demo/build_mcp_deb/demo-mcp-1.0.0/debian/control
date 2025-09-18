@@ -1,0 +1,37 @@
+Source: demo-mcp
+Section: utils
+Priority: optional
+Maintainer: Demo MCP Team <demo@example.com>
+Build-Depends: debhelper (>= 11), dh-python, python3-all, python3-setuptools
+Standards-Version: 4.5.1
+Homepage: https://github.com/demo-mcp/demo-mcp
+Vcs-Browser: https://github.com/demo-mcp/demo-mcp
+Vcs-Git: https://github.com/demo-mcp/demo-mcp.git
+
+Package: demo-mcp
+Architecture: all
+Depends: ${python3:Depends}, ${misc:Depends},
+         python3-flask,
+         python3-flask-cors,
+         python3-pandas,
+         python3-requests,
+         python3-urllib3,
+         unzip,
+         tar,
+         xz-utils
+Recommends: blender
+Description: Demo MCP (Model Context Protocol) Agent Server
+ A comprehensive agent server that integrates multiple AI tools and services
+ through the Model Context Protocol (MCP). This package includes:
+ .
+  * Agent server with Flask-based REST API
+  * Qwen-Agent integration for AI interactions
+  * Blender MCP addon for 3D modeling automation
+  * File system access tools
+  * Memory management capabilities
+  * Browser automation with Puppeteer
+  * High-precision map integration
+  * Code interpretation and execution tools
+ .
+ The server provides a unified interface for various AI-powered tools
+ and can be extended with additional MCP-compatible services. 

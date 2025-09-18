@@ -1,0 +1,11 @@
+demo-mcp (1.0.0-1) jammy; urgency=medium
+
+  * Initial release
+  * Agent server with MCP (Model Context Protocol) support
+  * Includes Qwen-Agent integration
+  * Blender MCP addon support
+  * File system and memory management tools
+  * Browser automation capabilities
+  * High-precision map integration
+
+ -- Demo MCP Team <demo@example.com>  Mon, 25 Dec 2024 10:00:00 +0800 

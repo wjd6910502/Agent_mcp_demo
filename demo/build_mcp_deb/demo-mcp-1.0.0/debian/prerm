@@ -1,0 +1,8 @@
+#!/bin/bash
+set -e
+
+# This script is called before the package is removed
+# We don't need to do anything special here for this package
+# The actual cleanup will be done in postrm
+
+echo "Preparing to remove Demo MCP package..." 

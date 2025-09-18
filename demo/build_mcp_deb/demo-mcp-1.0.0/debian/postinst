@@ -1,0 +1,96 @@
+#!/bin/bash
+set -e
+
+# This script is called after the package is installed
+# $1 contains the action: configure, abort-upgrade, abort-deconfigure, abort-remove
+
+case "$1" in
+    configure)
+        echo "Starting Demo MCP package post-installation setup..."
+        
+        # Run NVM and Node.js installation script
+        if [ -f /usr/share/demo-mcp/install-nvm-node.sh ]; then
+            echo "Installing NVM and Node.js..."
+            /usr/share/demo-mcp/install-nvm-node.sh
+        else
+            echo "Warning: install-nvm-node.sh not found"
+        fi
+
+        # Run UV installation script
+        if [ -f /usr/share/demo-mcp/install-uv.sh ]; then
+            echo "Installing UV..."
+            /usr/share/demo-mcp/install-uv.sh
+        else
+            echo "Warning: install-uv.sh not found"
+        fi
+
+        # Process demo_env.tar.gz: extract, clean __pycache__, and re-extract
+        if [ -f /usr/share/demo-mcp/source_pkg/demo_env.tar.gz ]; then
+            echo "Processing demo_env.tar.gz..."
+            cd /usr/share/demo-mcp
+            
+            # Create temporary directory for processing
+            mkdir -p temp_demo_env
+            
+            # Extract demo_env.tar.gz to temporary directory
+            echo "Extracting demo_env.tar.gz for processing..."
+            tar -xzf source_pkg/demo_env.tar.gz -C temp_demo_env
+            
+            # Remove all __pycache__ directories and Python cache files
+            echo "Removing __pycache__ directories and Python cache files..."
+            find temp_demo_env -type d -name "__pycache__" -exec rm -rf {} + 2>/dev/null || true
+            find temp_demo_env -name "*.pyc" -delete 2>/dev/null || true
+            find temp_demo_env -name "*.pyo" -delete 2>/dev/null || true
+            
+            # Extract cleaned files to current directory
+            echo "Extracting cleaned demo_env files..."
+            tar -czf temp_demo_env_clean.tar.gz -C temp_demo_env .
+            tar -xzf temp_demo_env_clean.tar.gz
+            
+            # Clean up temporary files
+            rm -rf temp_demo_env
+            rm -f temp_demo_env_clean.tar.gz
+            
+            echo "demo_env.tar.gz processed and extracted successfully"
+        else
+            echo "Warning: demo_env.tar.gz not found"
+        fi
+
+        # Set proper permissions
+        echo "Setting proper permissions..."
+        chown -R root:root /usr/share/demo-mcp
+        chmod -R 755 /usr/share/demo-mcp
+
+        echo "Demo MCP package installation completed successfully!"
+
+	if [ -f /usr/share/demo-mcp/source_pkg/blender-4.4.3-linux-x64.tar.xz ]; then
+            echo "Processing blender.tar.xz..."
+            cd /usr/share/demo-mcp
+            
+            # Extract demo_env.tar.gz to temporary directory
+            echo "Extracting blender.tar.gz for processing..."
+            tar -xvf source_pkg/blender-4.4.3-linux-x64.tar.xz 
+            
+            echo "blender.tar.gz processed and extracted successfully"
+        else
+            echo "Warning: blender.tar.xz not found"
+        fi
+
+        # Set proper permissions
+        echo "Setting proper permissions..."
+        chown -R root:root /usr/share/demo-mcp
+        chmod -R 755 /usr/share/demo-mcp
+
+        echo "blender package installation completed successfully!"
+
+
+        ;;
+    abort-upgrade|abort-deconfigure|abort-remove)
+        # These actions are called when the installation fails
+        # We don't need to do anything special here
+        ;;
+    *)
+        echo "postinst called with unknown argument \`$1'" >&2
+        exit 1
+        ;;
+esac 
